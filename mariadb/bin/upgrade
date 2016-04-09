@@ -1,0 +1,9 @@
+#!/bin/sh
+
+mkdir -p /run/mysqld && chown mysql /run/mysqld
+/usr/bin/mysqld --user=mysql --skip-networking > /dev/null 2>&1 &
+
+sleep 3s && \
+    mysql_upgrade -uroot
+
+mysqladmin -uroot shutdown
