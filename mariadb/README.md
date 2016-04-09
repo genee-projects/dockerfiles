@@ -1,4 +1,4 @@
-## MariaDB Environment
+# MariaDB Environment
 
 ### 1. Install a new database
 ```bash

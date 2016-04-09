@@ -1,4 +1,4 @@
-## Redis Environment
+# Redis Environment
 
 ```bash
 docker run --name redis \
