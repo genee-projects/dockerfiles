@@ -1,4 +1,4 @@
-FROM alpine:3.3
+FROM alpine:3.4
 MAINTAINER Jia Huang <iamfat@gmail.com>
 
 RUN apk update && apk add redis && rm -rf /var/cache/apk/* && \
