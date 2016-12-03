@@ -6,6 +6,7 @@ RUN apk update && apk add redis && rm -rf /var/cache/apk/* && \
     sed -i 's/^\(daemonize .*\)$/# \1/' /etc/redis/redis.conf && \
     sed -i 's/^\(logfile .*\)$/# \1/' /etc/redis/redis.conf && \
     sed -i 's/^\(bind .*\)$/# \1/' /etc/redis/redis.conf && \
+    sed -i 's/^protected-mode \(.*\)$/protected-mode no/' /etc/redis/redis.conf && \
     sed -i 's/^# syslog-enabled/syslog-enabled/' /etc/redis/redis.conf
 
 VOLUME ["/etc/redis", "/var/log/redis"]
