@@ -1,4 +1,4 @@
-FROM alpine:3.4
+FROM alpine:3.6
 MAINTAINER Jia Huang <iamfat@gmail.com>
 
 RUN apk add --update mariadb mariadb-client && rm -rf /var/cache/apk/* \
