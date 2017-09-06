@@ -1,7 +1,7 @@
 FROM alpine:3.6
 MAINTAINER Jia Huang <iamfat@gmail.com>
 
-RUN apk add --nocache rsyslog
+RUN apk add --no-cache rsyslog
 
 VOLUME ["/etc/rsyslog.d", "/var/log"]
 

@@ -1,7 +1,7 @@
 FROM alpine:3.6
 MAINTAINER Jia Huang <iamfat@gmail.com>
 
-RUN apk add --update mariadb mariadb-client && rm -rf /var/cache/apk/* \
+RUN apk add --no-cache mariadb mariadb-client \
     && mkdir /app && echo 'export PATH="/app/bin:$PATH"'>/etc/profile.d/docker
 ADD bin /app/bin
 
