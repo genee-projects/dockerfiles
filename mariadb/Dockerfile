@@ -5,7 +5,7 @@ RUN apk add --no-cache mariadb mariadb-client \
     && mkdir /app && echo 'export PATH="/app/bin:$PATH"'>/etc/profile.d/docker
 ADD bin /app/bin
 
-VOLUME ["/etc/mysql", "/var/lib/mysql"]
+VOLUME ["/etc/mysql", "/var/lib/mysql", "/var/log/mysql"]
 WORKDIR /app
 
 EXPOSE 3306
