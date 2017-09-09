@@ -5,7 +5,7 @@ RUN apk add --no-cache rsyslog \
 	&& echo '$ModLoad imudp.so' >> /etc/rsyslog.conf \
 	&& echo '$UDPServerRun 514' >> /etc/rsyslog.conf
 
-VOLUME ["/etc/rsyslog.d", "/var/log", "/dev/log"]
+VOLUME ["/etc/rsyslog.d", "/var/log", "/dev"]
 
 EXPOSE 514
 
