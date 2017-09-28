@@ -9,7 +9,6 @@ ADD bin /app/bin
 ADD libgalera_smm.so /usr/lib/galera/libgalera_smm.so
 ADD wsrep_sst_mariabackup /usr/bin/wsrep_sst_mariabackup
 
-VOLUME ["/etc/mysql", "/var/lib/mysql", "/var/log/mysql"]
 WORKDIR /app
 
 EXPOSE 3306
