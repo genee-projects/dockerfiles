@@ -7,6 +7,8 @@ RUN apk add --no-cache rsyslog \
 	&& echo '$InputUnixListenSocketCreatePath on' >> /etc/rsyslog.conf \
 	&& echo '$AddUnixListenSocket /run/dev/log' >> /etc/rsyslog.conf
 
+ADD start /start
+
 EXPOSE 514
 
-CMD ["/usr/sbin/rsyslogd", "-n"]
+CMD ["/start"]

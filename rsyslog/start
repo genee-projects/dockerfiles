@@ -1,0 +1,5 @@
+#/bin/sh
+
+# make sure pid file was cleared to avoid error
+[ -f /var/run/rsyslogd.pid ] && rm /var/run/rsyslogd.pid
+/usr/sbin/rsyslogd -n
