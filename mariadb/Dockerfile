@@ -3,7 +3,11 @@ MAINTAINER Jia Huang <iamfat@gmail.com>
 
 RUN apk add --no-cache mariadb mariadb-client bash rsync socat iproute2 \
     && mkdir -p /usr/lib/galera && mkdir /app \
-    && echo 'export PATH="/app/bin:$PATH"'>/etc/profile.d/docker
+    && echo 'export PATH="/app/bin:$PATH"' > /etc/profile.d/docker \
+    && mkdir -p /var/log/mysql \
+    && ln -sf /var/log/mysql/error.log /dev/stderr \
+    && ln -sf /var/log/mysql/general.log /dev/stdout \
+    && ln -sf /var/log/mysql/mysql.log /dev/stdout
 
 ADD bin /app/bin
 ADD libgalera_smm.so /usr/lib/galera/libgalera_smm.so
