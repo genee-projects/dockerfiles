@@ -1,7 +1,7 @@
 FROM alpine:3.6
 MAINTAINER iamfat@gmail.com
 
-RUN apk add --nocache nginx \
+RUN apk add --no-cache nginx \
     && ln -sf /var/log/nginx/access.log /dev/stdout \
     && ln -sf /var/log/nginx/error.log /dev/stderr
 
