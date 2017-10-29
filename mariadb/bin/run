@@ -1,10 +1,14 @@
 #!/bin/sh
 
 [ -d /run/mysqld ] || mkdir -p /run/mysqld
-[ -d /run/mysqld ] || mkdir -p /var/lib/mysql
 chown -R mysql:mysql /run/mysqld
+
+[ -d /run/mysqld ] || mkdir -p /var/lib/mysql
 chown -R mysql:mysql /var/lib/mysql
 chmod 0700 /var/lib/mysql
+
+[ -d /run/mysqld ] || mkdir -p /var/log/mysql
+chown -R mysql:mysql /var/log/mysql
 chmod 2750 /var/log/mysql
 
 exec /usr/bin/mysqld_safe $@
