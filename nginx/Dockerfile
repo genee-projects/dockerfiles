@@ -3,7 +3,8 @@ MAINTAINER iamfat@gmail.com
 
 RUN apk add --no-cache nginx \
     && ln -sf /var/log/nginx/access.log /dev/stdout \
-    && ln -sf /var/log/nginx/error.log /dev/stderr
+    && ln -sf /var/log/nginx/error.log /dev/stderr \
+    && mkdir -p /run/nginx
 
 ADD nginx.conf /etc/nginx
 
