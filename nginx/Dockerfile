@@ -7,7 +7,6 @@ RUN apk add --nocache nginx \
 
 ADD nginx.conf /etc/nginx
 
-VOLUME ["/etc/nginx"]
 EXPOSE 80
 
 CMD ["/usr/sbin/nginx"]

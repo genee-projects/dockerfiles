@@ -9,7 +9,7 @@ RUN echo "http://dl-5.alpinelinux.org/alpine/edge/testing" >> /etc/apk/repositor
 
 ADD sphinx.conf.sh /etc/sphinx/sphinx.conf.sh
 
-VOLUME ["/var/lib/sphinx", "/var/log/sphinx", "/var/run/sphinx"]
+# VOLUME ["/var/lib/sphinx", "/var/log/sphinx", "/var/run/sphinx"]
 
 # 9312 Sphinx Plain Port
 # 9306 SphinxQL Port
