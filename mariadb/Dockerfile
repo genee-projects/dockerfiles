@@ -1,13 +1,13 @@
-FROM alpine:3.6
+FROM alpine:3.7
 MAINTAINER Jia Huang <iamfat@gmail.com>
 
-RUN apk add --no-cache mariadb mariadb-client bash rsync socat iproute2 \
+RUN sed -i '1,$s/http\:\/\/dl-cdn.alpinelinux.org/https\:\/\/mirrors.aliyun.com/' /etc/apk/repositories && \
+    apk --update add --no-cache mariadb mariadb-client bash rsync socat iproute2 \
     && mkdir -p /usr/lib/galera && mkdir /app \
     && echo 'export PATH="/app/bin:$PATH"' > /etc/profile.d/docker
 
 ADD bin /app/bin
 ADD libgalera_smm.so /usr/lib/galera/libgalera_smm.so
-ADD wsrep_sst_mariabackup /usr/bin/wsrep_sst_mariabackup
 
 WORKDIR /app
 
