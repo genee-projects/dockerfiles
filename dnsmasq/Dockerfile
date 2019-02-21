@@ -1,4 +1,4 @@
-FROM alpine:3.6
+FROM alpine:3.9
 MAINTAINER Jia Huang <iamfat@gmail.com>
 
 RUN apk add --no-cache dnsmasq \
