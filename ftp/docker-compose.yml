@@ -1,0 +1,14 @@
+ftp:
+  container_name: ftp
+  image: genee/ftp
+  restart: always
+  ports:
+  - 20-21:20-21
+  - 43000-43100:43000-43100
+  environment:
+  - "FTP_USER=genee_epiboly"
+  - "FTP_PASS=genee_epiboly1"
+  #此处PASV_ADDRESS应设置为服务器外网ip，用于被动模式
+  - "PASV_ADDRESS=127.0.0.1"
+  volumes:
+  - /Users/lizhihao/data:/data
