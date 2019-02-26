@@ -6,9 +6,10 @@ ftp:
   - 20-21:20-21
   - 43000-43100:43000-43100
   environment:
-  - "FTP_USER=genee_epiboly"
-  - "FTP_PASS=genee_epiboly1"
-  #此处PASV_ADDRESS应设置为服务器外网ip，用于被动模式
-  - "PASV_ADDRESS=127.0.0.1"
+  #默认用户名密码为genee:83719730
+  #- "FTP_USER=<YOUR_CUSTOM_FTP_USER>"
+  #- "FTP_PASS=<YOUR_CUSTOM_FTP_USER>"
+  #此处PASV_ADDRESS应设置为服务器外网ip，用于被动模式,必须填写
+  - "PASV_ADDRESS=<YOUR_EXTERNAL_IP>"
   volumes:
-  - /Users/lizhihao/data:/data
+  - <YOUR_FTP_DIRECTORY>:/data
