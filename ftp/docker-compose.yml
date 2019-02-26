@@ -8,7 +8,7 @@ ftp:
   environment:
   #默认用户名密码为genee:83719730
   #- "FTP_USER=<YOUR_CUSTOM_FTP_USER>"
-  #- "FTP_PASS=<YOUR_CUSTOM_FTP_USER>"
+  #- "FTP_PASS=<YOUR_CUSTOM_FTP_PASSWD>"
   #此处PASV_ADDRESS应设置为服务器外网ip，用于被动模式,必须填写
   - "PASV_ADDRESS=<YOUR_EXTERNAL_IP>"
   volumes:
