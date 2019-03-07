@@ -13,7 +13,7 @@ RUN chmod +x /app/bin/run && \
 		mkdir -p /var/run/vsftpd/empty
 
 VOLUME /data 
-VOLUME /var/log/vsftpd
+VOLUME /var/log
 
 EXPOSE 20 21 
 
