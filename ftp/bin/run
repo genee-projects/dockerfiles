@@ -1,12 +1,8 @@
 #!/bin/bash
 
-# Create home dir and update vsftpd user db:
-mkdir -p /data
-chown -R ftp:ftp /data
-echo -e "${FTP_USER}\n${FTP_PASS}" > /etc/vsftpd/virtual_users.txt
-db_load -T -t hash -f /etc/vsftpd/virtual_users.txt /etc/vsftpd/virtual_users.db
+echo -e "${FTP_PASS}\n${FTP_PASS}" |adduser ${FTP_USER} -s /bin/false
+#db_load -T -t hash -f /etc/vsftpd/virtual_users.txt /etc/vsftpd/virtual_users.db
 
-# Set passive mode parameters:
 if [ "$PASV_ADDRESS" = "REQUIRED" ]; then
 	echo "Please insert IPv4 address of your host"
 	exit 1

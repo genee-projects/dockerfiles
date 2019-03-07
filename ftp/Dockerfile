@@ -1,24 +1,20 @@
-FROM ubuntu:16.04
+FROM alpine:3.9
 
-RUN apt-get update && \
-		apt-get install -y --no-install-recommends vsftpd db-util && \
-		apt-get clean && \
-        mkdir /app
+RUN apk add --no-cache vsftpd bash 
 
 ENV FTP_USER genee
 ENV FTP_PASS 83719730
 ENV PASV_ADDRESS REQUIRED
 
 ADD vsftpd.conf /etc/vsftpd/
-ADD vsftpd /etc/pam.d/
 ADD bin /app/bin
 
 RUN chmod +x /app/bin/run && \
 		mkdir -p /var/run/vsftpd/empty
 
 VOLUME /data 
-VOLUME /var/log/vsftpd
+VOLUME /var/log
 
-EXPOSE 20 21
+EXPOSE 20 21 
 
-CMD ["/app/bin/run"]
+CMD ["/bin/bash","/app/bin/run"]

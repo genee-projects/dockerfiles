@@ -13,3 +13,4 @@ ftp:
   - "PASV_ADDRESS=<YOUR_EXTERNAL_IP>"
   volumes:
   - <YOUR_FTP_DIRECTORY>:/data
+  - <YOUR_LOG_DIRECTORY>:/var/log
