@@ -1,13 +1,27 @@
 #!/bin/bash
 
-echo -e "${FTP_PASS}\n${FTP_PASS}" |adduser ${FTP_USER} -s /bin/false
-#db_load -T -t hash -f /etc/vsftpd/virtual_users.txt /etc/vsftpd/virtual_users.db
-
-if [ "$PASV_ADDRESS" = "REQUIRED" ]; then
-	echo "Please insert IPv4 address of your host"
-	exit 1
+if ! id -u ${FTP_USER} > /dev/null 2>&1; then
+	adduser ${FTP_USER} -s /bin/false --disabled-password
 fi
-echo "pasv_address=${PASV_ADDRESS}" >> /etc/vsftpd/vsftpd.conf
+echo "${FTP_USER}:${FTP_PASS}" | chpasswd > /dev/null 2>&1
 
-# Run vsftpd:
-vsftpd /etc/vsftpd/vsftpd.conf
+if [ -z "${PASV_ADDRESS}" ]; then
+	echo "Please set the host address to make passive mode working!"
+	exit 1
+else
+	sed -i 's/^pasv_address\s*=.*$/pasv_address='${PASV_ADDRESS}'/' /etc/vsftpd/vsftpd.conf
+fi
+
+if [ ! -z "${PASV_MIN_PORT}" ]; then
+	sed -i 's/^pasv_min_port\s*=.*$/pasv_min_port='${PASV_MIN_PORT}'/' /etc/vsftpd/vsftpd.conf
+fi
+
+if [ ! -z "${PASV_MAX_PORT}" ]; then
+	sed -i 's/^pasv_max_port\s*=.*$/pasv_max_port='${PASV_MAX_PORT}'/' /etc/vsftpd/vsftpd.conf
+fi
+
+# Run vsftpd and redirect log to standard output:
+LOG_FILE=/var/log/vsftpd.log
+rm -f "${LOG_FILE}" && mknod "${LOG_FILE}" p
+nohup /usr/sbin/vsftpd /etc/vsftpd/vsftpd.conf &
+while true; do cat "${LOG_FILE}"; done

@@ -1,4 +1,4 @@
-FROM alpine:3.6
+FROM alpine:3.9
 MAINTAINER Jia Huang <iamfat@gmail.com>
 
 RUN apk add --no-cache mariadb mariadb-client bash rsync socat iproute2 \
@@ -15,4 +15,4 @@ EXPOSE 3306
 
 ENV PATH=/app/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
 
-CMD "/app/bin/run"
+CMD ["/app/bin/run"]
