@@ -1,0 +1,55 @@
+#!/bin/bash
+
+set -e
+
+FTP_DIR=/var/lib/ftp
+FTP_JAIL=/var/lib/jail
+FTP_HOME="${FTP_JAIL}/${FTP_USER}"
+
+if [ ! -d ${FTP_HOME} ]; then
+    mkdir -p ${FTP_HOME}
+fi
+
+chown root:root ${FTP_JAIL}
+
+if [ -d ${FTP_DIR} ]; then
+    FTP_UID=$(stat -c %u ${FTP_DIR})
+    FTP_GID=$(stat -c %g ${FTP_DIR})
+fi
+
+if ${FTP_UID} == '0'; then
+    FTP_UID=1000
+    chown ${FTP_UID} ${FTP_DIR}
+fi
+
+if ${FTP_GID} == '0'; then
+    FTP_GID=1000
+    chgrp ${FTP_GID} ${FTP_DIR}
+fi
+
+mount --bind ${FTP_DIR} ${FTP_HOME}
+
+if ! getent group ${FTP_GROUP} > /dev/null 2>&1; then
+	addgroup -g ${FTP_GID} ${FTP_GROUP}
+fi
+
+if ! id -u ${FTP_USER} > /dev/null 2>&1; then
+	adduser ${FTP_USER} -u ${FTP_UID} -g ${FTP_USER} -G ${FTP_GROUP} -h ${FTP_JAIL} -H -s /bin/false -D
+fi
+
+echo "${FTP_USER}:${FTP_PASS}" | chpasswd > /dev/null 2>&1
+
+# Generate unique ssh keys for this container, if needed
+if [ ! -f /etc/ssh/ssh_host_ed25519_key ]; then
+    ssh-keygen -t ed25519 -f /etc/ssh/ssh_host_ed25519_key -N ''
+fi
+
+if [ ! -f /etc/ssh/ssh_host_rsa_key ]; then
+    ssh-keygen -t rsa -b 4096 -f /etc/ssh/ssh_host_rsa_key -N ''
+fi
+
+if [ ! -f /etc/ssh/ssh_host_ecdsa_key ]; then
+    ssh-keygen -t ecdsa -f /etc/ssh/ssh_host_ecdsa_key -N ''
+fi
+
+/usr/sbin/sshd -D -e

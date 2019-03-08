@@ -1,0 +1,13 @@
+sftp:
+  container_name: sftp
+  image: genee/sftp
+  restart: always
+  cap_add:
+  - SYS_ADMIN
+  ports:
+  - "4322:22"
+  environment:
+  - "FTP_USER=sftp"
+  - "FTP_PASS=sftp"
+  volumes:
+  - "<YOUR_FTP_DIRECTORY>:/var/lib/ftp"
