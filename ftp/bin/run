@@ -1,8 +1,18 @@
 #!/bin/bash
 
-if ! id -u ${FTP_USER} > /dev/null 2>&1; then
-	adduser ${FTP_USER} -s /bin/false --disabled-password
+FTP_DIR=/data
+
+FTP_UID=$(stat -c %u ${FTP_DIR})
+FTP_GID=$(stat -c %g ${FTP_DIR})
+
+if ! getent group ${FTP_GID} > /dev/null 2>&1; then
+	addgroup -g ${FTP_GID} gftp
 fi
+
+if ! id -u ${FTP_USER} > /dev/null 2>&1; then
+	adduser ${FTP_USER} -u ${FTP_UID} -G gftp -s /bin/false --disabled-password
+fi
+
 echo "${FTP_USER}:${FTP_PASS}" | chpasswd > /dev/null 2>&1
 
 if [ -z "${PASV_ADDRESS}" ]; then
