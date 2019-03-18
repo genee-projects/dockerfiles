@@ -1,17 +1,17 @@
 #!/bin/sh
 
 echo "Installing..."
-/usr/bin/mysql_install_db --user=mysql > /dev/null 2>&1
+/usr/bin/mysql_install_db --user=mysql --datadir=/var/lib/mysql > /dev/null 2>&1
 
 mkdir -p /run/mysqld && chown mysql /run/mysqld
 /usr/bin/mysqld --user=mysql --skip-networking > /dev/null 2>&1 &
 
-if [ !-z $MYSQL_USER ]
+if [ ! -z $MYSQL_USER ]
 then
     MYSQL_USER="genee"
 fi
 
-if [ !-z $MYSQL_PASS ]
+if [ ! -z $MYSQL_PASS ]
 then
     MYSQL_PASS="83719730"
 fi
