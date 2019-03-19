@@ -9,8 +9,8 @@ RUN apk add --no-cache redis && \
     sed -i 's/^protected-mode \(.*\)$/protected-mode no/' /etc/redis/redis.conf && \
     sed -i 's/^# syslog-enabled/syslog-enabled/' /etc/redis/redis.conf
 
-VOLUME ["/etc/redis", "/var/log/redis"]
-
+COPY start /start
+VOLUME ["/etc/redis"]
 EXPOSE 6379
 
-CMD ["/usr/bin/redis-server", "/etc/redis/redis.conf"]
+CMD ["/start"]
