@@ -2,8 +2,7 @@ sftp:
   container_name: sftp
   image: genee/sftp
   restart: always
-  cap_add:
-  - SYS_ADMIN
+  privileged: true
   ports:
   - "4322:22"
   environment:
