@@ -10,4 +10,4 @@ sftp:
   - "FTP_USER=sftp"
   - "FTP_PASS=sftp"
   volumes:
-  - "<YOUR_FTP_DIRECTORY>:/var/lib/ftp"
+  - "<YOUR_FTP_DIRECTORY>:/var/lib/jail/ftp"

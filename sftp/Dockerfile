@@ -1,5 +1,7 @@
 FROM alpine:latest
 
+RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.ustc.edu.cn/g' /etc/apk/repositories
+
 RUN apk add --upgrade --no-cache bash openssh
 
 ENV FTP_USER=sftp \
