@@ -9,6 +9,6 @@ RUN apk add --no-cache rsyslog \
 
 ADD start /start
 
-EXPOSE 514
+EXPOSE 514/udp
 
 CMD ["/start"]
