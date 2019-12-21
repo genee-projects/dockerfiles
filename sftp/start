@@ -4,10 +4,10 @@ set -e
 
 FTP_DIR=/var/lib/ftp
 FTP_JAIL=/var/lib/jail
-FTP_HOME="${FTP_JAIL}/${FTP_USER}"
+FTP_HOME=${FTP_JAIL}/ftp
 
 if [ ! -d ${FTP_HOME} ]; then
-    mkdir -p ${FTP_HOME}
+    mkdir -p ${FTP_JAIL}
 fi
 
 chown root:root ${FTP_JAIL}
@@ -27,7 +27,6 @@ if [ ${FTP_GID} == '0' ]; then
     chgrp ${FTP_GID} ${FTP_DIR}
 fi
 
-mount --bind ${FTP_DIR} ${FTP_HOME}
 
 if ! getent group ${FTP_GROUP} > /dev/null 2>&1; then
 	addgroup -g ${FTP_GID} ${FTP_GROUP}
