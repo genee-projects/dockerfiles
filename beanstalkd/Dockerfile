@@ -1,4 +1,4 @@
-FROM alpine:3.9
+FROM alpine:3
 LABEL maintainer=iamfat@gmail.com
 
 RUN apk add --no-cache beanstalkd
