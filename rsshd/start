@@ -1,0 +1,97 @@
+#!/bin/sh
+
+set -e
+
+DATA_DIR=/mnt/data
+JAIL_DIR=/jail
+RSSH_GROUP=rssh
+
+chown root:root ${JAIL_DIR}
+
+if [ -d ${DATA_DIR} ]; then
+    RSSH_UID=$(stat -c %u ${DATA_DIR})
+    RSSH_GID=$(stat -c %g ${DATA_DIR})
+fi
+
+if [ ${RSSH_UID} == '0' ]; then
+    RSSH_UID=1000
+    chown ${RSSH_UID} ${DATA_DIR}
+fi
+
+if [ ${RSSH_GID} == '0' ]; then
+    RSSH_GID=1000
+    chgrp ${RSSH_GID} ${DATA_DIR}
+fi
+
+if ! getent group ${RSSH_GROUP} > /dev/null 2>&1; then
+	addgroup -g ${RSSH_GID} ${RSSH_GROUP}
+fi
+
+if ! id -u ${RSSH_USER} > /dev/null 2>&1; then
+	adduser ${RSSH_USER} -u ${RSSH_UID} -g ${RSSH_USER} -G ${RSSH_GROUP} -h ${DATA_DIR} -H -s /usr/bin/rssh -D
+fi
+
+echo "${RSSH_USER}:${RSSH_PASS}" | chpasswd > /dev/null 2>&1
+
+
+# mount data
+mkdir -p ${JAIL_DIR}${DATA_DIR}
+mount ${DATA_DIR} ${JAIL_DIR}${DATA_DIR}
+
+# mount etc
+if [ ! -d ${JAIL_DIR}/etc ]; then
+    mkdir -p ${JAIL_DIR}/etc
+    grep ${RSSH_USER} /etc/passwd > ${JAIL_DIR}/etc/passwd
+    grep ${RSSH_GROUP} /etc/group > ${JAIL_DIR}/etc/group
+    cp /etc/hosts ${JAIL_DIR}/etc
+    cp /etc/resolv.conf ${JAIL_DIR}/etc
+fi
+
+if [ ! -d ${JAIL_DIR}/bin ]; then
+    mkdir -p ${JAIL_DIR}/bin
+    cp /bin/sh ${JAIL_DIR}/bin
+fi
+
+if [ ! -d ${JAIL_DIR}/usr/bin ]; then
+    mkdir -p ${JAIL_DIR}/usr/bin
+    cp /usr/bin/scp ${JAIL_DIR}/usr/bin
+    cp /usr/bin/rsync ${JAIL_DIR}/usr/bin
+    cp /usr/bin/sftp ${JAIL_DIR}/usr/bin
+fi
+
+if [ ! -d ${JAIL_DIR}/lib ]; then
+    mkdir -p ${JAIL_DIR}/lib
+    mount -r /lib ${JAIL_DIR}/lib
+fi
+
+if [ ! -d ${JAIL_DIR}/usr/lib ]; then
+    mkdir -p ${JAIL_DIR}/usr/lib
+    mount -r /usr/lib ${JAIL_DIR}/usr/lib
+fi
+
+if [ ! -d ${JAIL_DIR}/dev ]; then
+    mkdir -p ${JAIL_DIR}/dev
+    mknod -m 666 ${JAIL_DIR}/dev/null c 1 3
+fi
+
+cat <<EOF > /etc/rssh.conf
+allowscp
+allowrsync
+allowsftp
+chrootpath=${JAIL_DIR}
+EOF
+
+# Generate unique ssh keys for this container, if needed
+if [ ! -f /etc/ssh/ssh_host_ed25519_key ]; then
+    ssh-keygen -t ed25519 -f /etc/ssh/ssh_host_ed25519_key -N ''
+fi
+
+if [ ! -f /etc/ssh/ssh_host_rsa_key ]; then
+    ssh-keygen -t rsa -b 4096 -f /etc/ssh/ssh_host_rsa_key -N ''
+fi
+
+if [ ! -f /etc/ssh/ssh_host_ecdsa_key ]; then
+    ssh-keygen -t ecdsa -f /etc/ssh/ssh_host_ecdsa_key -N ''
+fi
+
+/usr/sbin/sshd -D -e

@@ -1,0 +1,18 @@
+version: "3"
+
+services:
+  rsshd:
+    container_name: rsshd
+    image: genee/rsshd:alpine
+    restart: always
+    privileged: true
+    ports:
+      - "4322:22"
+    environment:
+      - "RSSH_USER=genee"
+      - "RSSH_PASS=83719730"
+    volumes:
+      - ./ftp:/mnt/data
+      - ./keys/ssh_host_ecdsa_key:/etc/ssh/ssh_host_ecdsa_key:ro
+      - ./keys/ssh_host_ed25519_key:/etc/ssh/ssh_host_ed25519_key:ro
+      - ./keys/ssh_host_rsa_key:/etc/ssh/ssh_host_rsa_key:ro
